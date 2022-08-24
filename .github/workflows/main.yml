@@ -1,0 +1,20 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  
+  build-mac:
+    name: MacOS Build
+    runs-on: macos-latest
+
+  build-linux:
+    name: Linux Build
+    runs-on: ubuntu-latest
+
+  build-windows:
+    name: Windows Build
+    runs-on: windows-latest

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/Galitan-dev/Typino/compare/v0.1.7...v0.1.8) (2022-08-24)
+
+
+### Bug Fixes
+
+* set tauri build dist path ([c2ba6e0](https://github.com/Galitan-dev/Typino/commit/c2ba6e074fa47b2e6ea1613a108dd1c0227a1d30))
+
 ### [0.1.7](https://github.com/Galitan-dev/Typino/compare/v0.1.6...v0.1.7) (2022-08-24)
 
 ### [0.1.6](https://github.com/Galitan-dev/Typino/compare/v0.1.5...v0.1.6) (2022-08-24)

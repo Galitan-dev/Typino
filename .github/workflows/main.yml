@@ -189,7 +189,9 @@ jobs:
 
   release-assets-mac:
     name: Upload MacOS Bundles
-    needs: build-mac
+    needs:
+      - build-mac
+      - release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -221,8 +223,10 @@ jobs:
           asset_content_type: application/gzip
 
   release-assets-linux:
-    name: Upload MacOS Bundles
-    needs: build-linux
+    name: Upload Linux Bundles
+    needs:
+      - build-linux
+      - release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -255,7 +259,9 @@ jobs:
 
   release-assets-windows:
     name: Upload Windows Bundles
-    needs: build-windows
+    needs:
+      - build-windows
+      - release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

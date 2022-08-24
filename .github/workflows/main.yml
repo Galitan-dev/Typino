@@ -34,7 +34,7 @@ jobs:
             src-tauri/target/
           key: ${{ runner.os }}-cargo-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-cargo
+            ${{ runner.os }}-cargo-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -93,7 +93,7 @@ jobs:
             src-tauri/target/
           key: ${{ runner.os }}-cargo-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-cargo
+            ${{ runner.os }}-cargo-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -144,7 +144,7 @@ jobs:
             src-tauri/target/
           key: ${{ runner.os }}-cargo-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-cargo
+            ${{ runner.os }}-cargo-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"

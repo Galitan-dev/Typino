@@ -14,11 +14,18 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+    - name: Install Yarn
     - run: npm install --location=global yarn
+    - name: Install Dependencies
     - run: yarn install
+    - name: Build MacOS Bundles
+    - run: yarn build
 
   build-linux:
     permissions:
@@ -27,9 +34,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    - name: Install Dependencies
     - uses: borales/actions-yarn@v3.0.0
       with:
         cmd: install
+    - name: Build Linux Bundles
+    - uses: borales/actions-yarn@v3.0.0
+      with:
+        cmd: build
 
   build-windows:
     permissions:
@@ -38,8 +53,15 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+    - name: Install Yarn
     - run: npm install --location=global yarn
+    - name: Install Dependencies
     - run: yarn install
+    - name: Build Windows Bundles
+    - run: yarn build

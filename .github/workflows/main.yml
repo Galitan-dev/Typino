@@ -136,11 +136,11 @@ jobs:
           name: windows-bundles
           path: ./src-tauri/target/release/bundle
 
-  release:
+  get-version:
     name: Create a Release
     runs-on: ubuntu-latest
     outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.version.outputs.prop }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -150,16 +150,24 @@ jobs:
         with:
           path: "package.json"
           prop_path: "version"
+
+  release:
+    name: Create a Release
+    needs: get-version
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
       - name: Get Changelog
         id: get-changelog
-        run: echo "::set-output name=section::$(sed -n '/### \[${{ steps.version.outputs.prop }}\]/,/### \[/p' CHANGELOG.md | sed 1,3d | sed '$d' | sed '$d')"
+        run: echo "::set-output name=section::$(sed -n '/### \[${{ needs.get-version.outputs.version }}\]/,/### \[/p' CHANGELOG.md | sed 1,3d | sed '$d' | sed '$d')"
       - name: Create a Release
         uses: actions/create-release@v1
         id: create_release
         with:
           draft: false
           prerelease: false
-          release_name: ${{ steps.version.outputs.prop }}
+          release_name: ${{ needs.get-version.outputs.version }}
           tag_name: ${{ github.ref }}
           body: ${{ steps.get-changelog.outputs.section }}
 
@@ -167,17 +175,10 @@ jobs:
     name: Upload MacOS Bundles
     needs:
       - build-mac
+      - get-version
       - release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Get Version
-        id: version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: "package.json"
-          prop_path: "version"
       - name: Download Bundles
         uses: actions/download-artifact@v3
         with:
@@ -191,7 +192,7 @@ jobs:
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ${{ steps.locate-typino-dmg.outputs.path }}
-          asset_name: Typino-${{ steps.version.outputs.prop }}.dmg
+          asset_name: Typino-${{ needs.get-version.outputs.version }}.dmg
           asset_content_type: application/gzip
 
   release-assets-linux:
@@ -199,16 +200,9 @@ jobs:
     needs:
       - build-linux
       - release
+      - get-version
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Get Version
-        id: version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: "package.json"
-          prop_path: "version"
       - name: Download Bundles
         uses: actions/download-artifact@v3
         with:
@@ -225,14 +219,14 @@ jobs:
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ${{ steps.locate-typino-deb.outputs.path }}
-          asset_name: Typino-${{ steps.version.outputs.prop }}.deb
+          asset_name: Typino-${{ needs.get-version.outputs.version }}.deb
           asset_content_type: application/gzip
       - name: Upload Typino.AppImage
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ${{ steps.locate-typino-appimage.outputs.path }}
-          asset_name: Typino-${{ steps.version.outputs.prop }}.AppImage
+          asset_name: Typino-${{ needs.get-version.outputs.version }}.AppImage
           asset_content_type: application/gzip
 
   release-assets-windows:
@@ -240,16 +234,9 @@ jobs:
     needs:
       - build-windows
       - release
+      - get-version
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Get Version
-        id: version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: "package.json"
-          prop_path: "version"
       - name: Download Bundles
         uses: actions/download-artifact@v3
         with:
@@ -263,5 +250,5 @@ jobs:
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ${{ steps.locate-typino-msi.outputs.path }}
-          asset_name: Typino-${{ steps.version.outputs.prop }}.msi
+          asset_name: Typino-${{ needs.get-version.outputs.version }}.msi
           asset_content_type: application/gzip

@@ -52,9 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: mac-bundles
-          path: |
-            ./src-tauri/target/release/bundle/macos/Typino.app
-            ./src-tauri/target/release/bundle/dmg/Typino*.dmg
+          path: ./src-tauri/target/release/bundle
 
   build-linux:
     name: Linux Build
@@ -111,9 +109,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: linux-bundles
-          path: |
-            ./src-tauri/target/release/bundle/deb/typino*.deb
-            ./src-tauri/target/release/bundle/appimage/typino*.AppImage
+          path: ./src-tauri/target/release/bundle
 
   build-windows:
     name: Windows Build
@@ -162,8 +158,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: windows-bundles
-          path: |
-            ./src-tauri/target/release/bundle/msi/Typino*.msi
+          path: ./src-tauri/target/release/bundle
 
   release:
     name: Create a Release
@@ -209,13 +204,6 @@ jobs:
         with:
           name: mac-bundles
           path: ./bundle
-      - name: Upload Typino.app
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/macos/Typino.app
-          asset_name: Typino-${{ steps.version.outputs.prop }}.app
-          asset_content_type: application/gzip
       - name: Upload Typino.dmg
         uses: actions/upload-release-asset@v1
         with:
@@ -248,14 +236,14 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/deb/Typino*.app
+          asset_path: ./bundle/deb/typino*.deb
           asset_name: Typino-${{ steps.version.outputs.prop }}.deb
           asset_content_type: application/gzip
       - name: Upload Typino.AppImage
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/appimage/Typino*.AppImage
+          asset_path: ./bundle/appimage/typino*.AppImage
           asset_name: Typino-${{ steps.version.outputs.prop }}.AppImage
           asset_content_type: application/gzip
 
@@ -277,12 +265,12 @@ jobs:
       - name: Download Bundles
         uses: actions/download-artifact@v3
         with:
-          name: window-bundles
+          name: windows-bundles
           path: ./bundle
       - name: Upload Typino.msi
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/Typino*.msi
+          asset_path: ./bundle/msi/Typino*.msi
           asset_name: Typino-${{ steps.version.outputs.prop }}.msi
           asset_content_type: application/gzip

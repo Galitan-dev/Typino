@@ -1,6 +1,6 @@
 [package]
 name = "typino"
-version = "0.1.13"
+version = "0.1.14"
 description = "A CSV Editor written in Rust and Vue"
 authors = ["Galitan-dev"]
 license = "MIT"

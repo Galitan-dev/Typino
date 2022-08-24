@@ -174,6 +174,9 @@ jobs:
         with:
           path: "package.json"
           prop_path: "version"
+      - name: Get Changelog
+        id: get-changelog
+        run: echo "::set-output name=section::$(sed -n '/### \[${{ steps.version.outputs.prop }}\]/,/### \[/p' CHANGELOG.md | sed 1,3d | sed '$d' | sed '$d')"
       - name: Create a Release
         uses: actions/create-release@v1
         id: create_release
@@ -182,7 +185,7 @@ jobs:
           prerelease: false
           release_name: ${{ steps.version.outputs.prop }}
           tag_name: ${{ github.ref }}
-          body_path: CHANGELOG.md
+          body: ${{ steps.get-changelog.outputs.section }}
 
   release-assets-mac:
     name: Upload MacOS Bundles
@@ -204,11 +207,14 @@ jobs:
         with:
           name: mac-bundles
           path: ./bundle
+      - name: Locate Typino.dmg
+        id: locate-typino-dmg
+        run: echo "::set-output name=path::$(echo bundle/dmg/Typino*.dmg)"
       - name: Upload Typino.dmg
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/dmg/Typino*.dmg
+          asset_path: ${{ steps.locate-typino-dmg.outputs.path }}
           asset_name: Typino-${{ steps.version.outputs.prop }}.dmg
           asset_content_type: application/gzip
 
@@ -232,18 +238,24 @@ jobs:
         with:
           name: linux-bundles
           path: ./bundle
+      - name: Locate Typino.deb
+        id: locate-typino-deb
+        run: echo "::set-output name=path::$(echo bundle/deb/typino*.deb)"
+      - name: Locate Typino.AppImage
+        id: locate-typino-appimage
+        run: echo "::set-output name=path::$(echo bundle/appimage/typino*.AppImage)"
       - name: Upload Typino.deb
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/deb/typino*.deb
+          asset_path: ${{ steps.locate-typino-deb.outputs.path }}
           asset_name: Typino-${{ steps.version.outputs.prop }}.deb
           asset_content_type: application/gzip
       - name: Upload Typino.AppImage
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/appimage/typino*.AppImage
+          asset_path: ${{ steps.locate-typino-appimage.outputs.path }}
           asset_name: Typino-${{ steps.version.outputs.prop }}.AppImage
           asset_content_type: application/gzip
 
@@ -267,10 +279,13 @@ jobs:
         with:
           name: windows-bundles
           path: ./bundle
+      - name: Locate Typino.msi
+        id: locate-typino-msi
+        run: echo "::set-output name=path::$(echo bundle/msi/Typino*.msi)"
       - name: Upload Typino.msi
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./bundle/msi/Typino*.msi
+          asset_path: ${{ steps.locate-typino-msi.outputs.path }}
           asset_name: Typino-${{ steps.version.outputs.prop }}.msi
           asset_content_type: application/gzip

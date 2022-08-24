@@ -9,6 +9,10 @@
       "updater": "version/rustUpdater.js"
     },
     {
+      "filename": "src-tauri/Cargo.lock",
+      "updater": "version/rustUpdater.js"
+    },
+    {
       "filename": "package.json",
       "type": "json"
     }

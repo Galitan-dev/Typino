@@ -143,7 +143,7 @@ jobs:
           path: ./src-tauri/target/release/bundle
 
   get-version:
-    name: Create a Release
+    name: Get Current Version
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.prop }}

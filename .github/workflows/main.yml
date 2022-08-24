@@ -16,7 +16,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Install rust
-      run: curl https://sh.rustup.rs -sSf | sh
+      run: curl https://sh.rustup.rs -sSf | sh -s -- -y
     - name: Install NodeJS
       uses: actions/setup-node@v3
       with:
@@ -58,7 +58,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Install rust
-      run: curl https://sh.rustup.rs -sSf | sh
+      run: curl https://sh.rustup.rs -sSf | sh -s -- -y
     - name: Install NodeJS
       uses: actions/setup-node@v3
       with:

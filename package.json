@@ -7,7 +7,7 @@
     "build": "vue-cli-service tauri:build",
     "serve": "vue-cli-service tauri:serve",
     "prepare": "husky install",
-    "release": "standard-version --commit-all && git tag -d refs/heads/main && git push origin --delete refs/tags/refs/heads/main"
+    "release": "standard-version --commit-all && git tag -d refs/heads/main"
   },
   "dependencies": {
     "vue": "^3.2.13"

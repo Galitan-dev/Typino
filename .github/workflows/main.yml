@@ -19,6 +19,8 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
+    - name: Install Cargo
+      uses: actions-rs/cargo@v1
     - name: Install NodeJS
       uses: actions/setup-node@v3
       with:
@@ -42,6 +44,8 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
+    - name: Install Cargo
+      uses: actions-rs/cargo@v1
     - name: Install Dependencies
       uses: borales/actions-yarn@v3.0.0
       with:
@@ -63,6 +67,8 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
+    - name: Install Cargo
+      uses: actions-rs/cargo@v1
     - name: Install NodeJS
       uses: actions/setup-node@v3
       with:

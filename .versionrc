@@ -7,6 +7,10 @@
     {
       "filename": "src-tauri/Cargo.toml",
       "updater": "version/rustUpdater.js"
+    },
+    {
+      "filename": "package.json",
+      "type": "json"
     }
   ]
 }

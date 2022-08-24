@@ -5,10 +5,11 @@ on:
     branches:
       - "main"
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build-mac:
-    permissions:
-      contents: write
     name: MacOS Build
     runs-on: macos-latest
     steps:
@@ -47,10 +48,15 @@ jobs:
         run: yarn install
       - name: Build MacOS Bundles
         run: yarn build
+      - name: Save Bundles
+        uses: actions/upload-artifact@v3
+        with:
+          name: mac-bundles
+          path: |
+            ./src-tauri/target/release/bundle/macos/Typino.app
+            ./src-tauri/target/release/bundle/dmg/Typino*.dmg
 
   build-linux:
-    permissions:
-      contents: write
     name: Linux Build
     runs-on: ubuntu-latest
     steps:
@@ -101,10 +107,15 @@ jobs:
         run: yarn install
       - name: Build Linux Bundles
         run: yarn build
+      - name: Save Bundles
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-bundles
+          path: |
+            ./src-tauri/target/release/bundle/deb/typino*.deb
+            ./src-tauri/target/release/bundle/appimage/typino*.AppImage
 
   build-windows:
-    permissions:
-      contents: write
     name: Windows Build
     runs-on: windows-latest
     steps:
@@ -147,3 +158,123 @@ jobs:
         run: yarn install
       - name: Build Windows Bundles
         run: yarn build
+      - name: Save Bundles
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-bundles
+          path: |
+            ./src-tauri/target/release/bundle/msi/Typino*.msi
+
+  release:
+    name: Create a Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+      - name: Create a Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.prop }}
+          tag_name: ${{ github.ref }}
+          body_path: CHANGELOG.md
+
+  release-assets-mac:
+    name: Upload MacOS Bundles
+    needs: build-mac
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+      - name: Download Bundles
+        uses: actions/download-artifact@v3
+        with:
+          name: mac-bundles
+          path: ./bundle
+      - name: Upload Typino.app
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundle/Typino.app
+          asset_name: Typino-${{ steps.version.outputs.prop }}.app
+          asset_content_type: application/gzip
+      - name: Upload Typino.dmg
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundle/Typino*.dmg
+          asset_name: Typino-${{ steps.version.outputs.prop }}.dmg
+          asset_content_type: application/gzip
+
+  release-assets-linux:
+    name: Upload MacOS Bundles
+    needs: build-linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+      - name: Download Bundles
+        uses: actions/download-artifact@v3
+        with:
+          name: linux-bundles
+          path: ./bundle
+      - name: Upload Typino.deb
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundle/Typino*.app
+          asset_name: Typino-${{ steps.version.outputs.prop }}.deb
+          asset_content_type: application/gzip
+      - name: Upload Typino.AppImage
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundle/Typino*.AppImage
+          asset_name: Typino-${{ steps.version.outputs.prop }}.AppImage
+          asset_content_type: application/gzip
+
+  release-assets-windows:
+    name: Upload Windows Bundles
+    needs: build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+      - name: Download Bundles
+        uses: actions/download-artifact@v3
+        with:
+          name: window-bundles
+          path: ./bundle
+      - name: Upload Typino.msi
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bundle/Typino*.msi
+          asset_name: Typino-${{ steps.version.outputs.prop }}.msi
+          asset_content_type: application/gzip

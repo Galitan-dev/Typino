@@ -213,14 +213,14 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bundle/Typino.app
+          asset_path: ./bundle/macos/Typino.app
           asset_name: Typino-${{ steps.version.outputs.prop }}.app
           asset_content_type: application/gzip
       - name: Upload Typino.dmg
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bundle/Typino*.dmg
+          asset_path: ./bundle/dmg/Typino*.dmg
           asset_name: Typino-${{ steps.version.outputs.prop }}.dmg
           asset_content_type: application/gzip
 
@@ -248,14 +248,14 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bundle/Typino*.app
+          asset_path: ./bundle/deb/Typino*.app
           asset_name: Typino-${{ steps.version.outputs.prop }}.deb
           asset_content_type: application/gzip
       - name: Upload Typino.AppImage
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bundle/Typino*.AppImage
+          asset_path: ./bundle/appimage/Typino*.AppImage
           asset_name: Typino-${{ steps.version.outputs.prop }}.AppImage
           asset_content_type: application/gzip
 

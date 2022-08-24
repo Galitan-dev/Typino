@@ -4,6 +4,6 @@
   - [Roadmap](#roadmap)
 
 ## Roadmap
-* [ ] Semantic Versioning
+* [x] Semantic Versioning
 * [ ] Release
 * [ ] Better Readme

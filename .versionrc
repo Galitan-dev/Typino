@@ -1,0 +1,12 @@
+{
+  "bumpFiles": [
+    {
+      "filename": "src-tauri/tauri.conf.json",
+      "updater": "version/tauriUpdater.js"
+    },
+    {
+      "filename": "src-tauri/Cargo.toml",
+      "updater": "version/rustUpdater.js"
+    }
+  ]
+}

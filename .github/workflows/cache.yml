@@ -47,11 +47,6 @@ jobs:
         run: yarn install
       - name: Build MacOS Bundles
         run: yarn build
-      - name: Save Bundles
-        uses: actions/upload-artifact@v3
-        with:
-          name: mac-bundles
-          path: ./src-tauri/target/release/bundle
 
   build-linux:
     name: Linux Build
@@ -106,11 +101,6 @@ jobs:
         run: yarn install
       - name: Build Linux Bundles
         run: yarn build
-      - name: Save Bundles
-        uses: actions/upload-artifact@v3
-        with:
-          name: linux-bundles
-          path: ./src-tauri/target/release/bundle
 
   build-windows:
     name: Windows Build
@@ -157,8 +147,3 @@ jobs:
         run: yarn install
       - name: Build Windows Bundles
         run: yarn build
-      - name: Save Bundles
-        uses: actions/upload-artifact@v3
-        with:
-          name: windows-bundles
-          path: ./src-tauri/target/release/bundle

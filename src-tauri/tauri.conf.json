@@ -4,7 +4,7 @@
     "beforeBuildCommand": "",
     "beforeDevCommand": "",
     "devPath": "../src",
-    "distDir": "./webpack_dist"
+    "distDir": "./target/webpack_dist"
   },
   "package": {
     "productName": "Typino",

@@ -1,6 +1,10 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <HelloWorld
+    msg="Typino"
+    author="Galitan-dev"
+    authorLink="https://github.com/Galitan-dev"
+  />
 </template>
 
 <script lang="ts">
@@ -21,7 +25,7 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #a09abc;
   margin-top: 60px;
 }
 </style>

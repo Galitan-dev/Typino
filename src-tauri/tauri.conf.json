@@ -59,7 +59,9 @@
         "height": 600,
         "resizable": true,
         "title": "Typino",
-        "width": 800
+        "width": 800,
+        "minWidth": 700,
+        "minHeight": 500
       }
     ]
   }

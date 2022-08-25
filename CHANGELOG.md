@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.30](https://github.com/Galitan-dev/Typino/compare/v0.1.29...v0.1.30) (2022-08-25)
+
+
+### Features
+
+* app icon & colors ([55eea5c](https://github.com/Galitan-dev/Typino/commit/55eea5c33b1c701d8c1b5ad566945cf872cf46ec))
+
 ### [0.1.29](https://github.com/Galitan-dev/Typino/compare/v0.1.28...v0.1.29) (2022-08-25)
 
 ### [0.1.28](https://github.com/Galitan-dev/Typino/compare/v0.1.27...v0.1.28) (2022-08-25)

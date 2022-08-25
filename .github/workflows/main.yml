@@ -160,7 +160,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-
       - name: Clean Bundles
-        run: rm -rf src-tauri/target/release/bundle/*
+        run: rmdir /s /q src-tauri/target/release/bundle/*
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"

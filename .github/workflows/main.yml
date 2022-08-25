@@ -55,12 +55,12 @@ jobs:
       - name: Save Typino-MacOS.dmg
         uses: actions/upload-artifact@v3
         with:
-          name: Typino-MacOS.dmg
+          name: Typino-MacOS-dmg
           path: src-tauri/target/release/bundle/dmg/Typino*.dmg
       - name: Save Typino-MacOS.app
         uses: actions/upload-artifact@v3
         with:
-          name: Typino-MacOS.app
+          name: Typino-MacOS-app
           path: src-tauri/target/release/bundle/macos/Typino.app
 
   build-linux:
@@ -121,12 +121,12 @@ jobs:
       - name: Save Typino-Linux.deb
         uses: actions/upload-artifact@v3
         with:
-          name: Typino-Linux.deb
+          name: Typino-Linux-deb
           path: src-tauri/target/release/bundle/deb/typino*.deb
       - name: Save Typino-Linux.AppImage
         uses: actions/upload-artifact@v3
         with:
-          name: Typino-Linux.AppImage
+          name: Typino-Linux-AppImage
           path: src-tauri/target/release/bundle/appimage/typino*.AppImage
 
   build-windows:
@@ -179,7 +179,7 @@ jobs:
       - name: Save Typino-Windows.msi
         uses: actions/upload-artifact@v3
         with:
-          name: Typino-Windows.msi
+          name: Typino-Windows-msi
           path: src-tauri/target/release/bundle/msi/Typino*.msi
 
   get-version:
@@ -225,16 +225,19 @@ jobs:
       - release
     runs-on: ubuntu-latest
     steps:
-      - name: Download Typino-Macos.dmg
+      - name: Download Typino-MacOS.dmg
         uses: actions/download-artifact@v3
         with:
-          name: Typino-Macos.dmg
-          path: Typino-Macos.dmg
-      - name: Upload Typino-Macos.dmg
+          name: Typino-MacOS-dmg
+          path: dmg
+      - name: Locate Typino-MacOS.dmg
+        id: locate-typino-dmg
+        run: echo "::set-output name=path::$(echo dmg/Typino*.dmg)"
+      - name: Upload Typino-MacOS.dmg
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: Typino-Macos.dmg
+          asset_path: ${{ steps.locate-typino-dmg.outputs.path }}
           asset_name: Typino-${{ needs.get-version.outputs.version }}-MacOS.dmg
           asset_content_type: application/gzip
 
@@ -249,25 +252,31 @@ jobs:
       - name: Download Typino-Linux.deb
         uses: actions/download-artifact@v3
         with:
-          name: Typino-Linux.deb
-          path: Typino-Linux.deb
+          name: Typino-Linux-deb
+          path: deb
       - name: Download Typino-Linux.AppImage
         uses: actions/download-artifact@v3
         with:
-          name: Typino-Linux.AppImage
-          path: Typino-Linux.AppImage
+          name: Typino-Linux-AppImage
+          path: appimage
+      - name: Locate Typino-Linux.deb
+        id: locate-typino-deb
+        run: echo "::set-output name=path::$(echo deb/typino*.deb)"
+      - name: Locate Typino-Linux.AppImage
+        id: locate-typino-appimage
+        run: echo "::set-output name=path::$(echo appimage/typino*.AppImage)"
       - name: Upload Typino-Linux.deb
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: Typino-Linux.deb
+          asset_path: ${{ steps.locate-typino-deb.outputs.path }}
           asset_name: Typino-${{ needs.get-version.outputs.version }}-Linux.deb
           asset_content_type: application/gzip
       - name: Upload Typino-Linux.AppImage
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: Typino-Linux.AppImage
+          asset_path: ${{ steps.locate-typino-appimage.outputs.path }}
           asset_name: Typino-${{ needs.get-version.outputs.version }}-Linux.AppImage
           asset_content_type: application/gzip
 
@@ -282,12 +291,15 @@ jobs:
       - name: Download Typino-Windows.msi
         uses: actions/download-artifact@v3
         with:
-          name: Typino-Windows.msi
-          path: Typino-Windows.msi
+          name: Typino-Windows-msi
+          path: msi
+      - name: Locate Typino-Windows.msi
+        id: locate-typino-msi
+        run: echo "::set-output name=path::$(echo msi/Typino*.msi)"
       - name: Upload Typino-Windows.msi
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: Typino-Windows.msi
+          asset_path: ${{ steps.locate-typino-msi.outputs.path }}
           asset_name: Typino-${{ needs.get-version.outputs.version }}-Windows.msi
           asset_content_type: application/gzip
